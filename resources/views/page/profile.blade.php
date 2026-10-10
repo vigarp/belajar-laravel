@@ -22,7 +22,7 @@
                         <h4 class="mb-0">Data Mahasiswa</h4>
 
                         <span class="badge bg-success">
-                            {{ $mahasiswa['status'] }}
+                            {{ $mahasiswa->status }}
                         </span>
 
                     </div>
@@ -31,22 +31,22 @@
 
                         <p>
                             <strong>Nama:</strong>
-                            {{ $mahasiswa['nama'] }}
+                            {{ $mahasiswa->nama }}
                         </p>
 
                         <p>
                             <strong>NIM:</strong>
-                            {{ $mahasiswa['nim'] }}
+                            {{ $mahasiswa->nim }}
                         </p>
 
                         <p>
                             <strong>Jurusan:</strong>
-                            {{ $mahasiswa['prodi'] }}
+                            {{ $mahasiswa->prodi }}
                         </p>
 
                         <p>
                             <strong>Kampus:</strong>
-                            {{ $mahasiswa['kampus'] }}
+                            {{ $mahasiswa->kampus }}
                         </p>
 
                     </div>
