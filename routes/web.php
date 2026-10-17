@@ -16,3 +16,8 @@ Route::get('/about', function () {
     return view('page.about');
 });
 
+Route::prefix('admin')->group(function () {
+    Route::get('/', function() {
+        return view('admin.template');
+    })->name('admin.home');
+});
