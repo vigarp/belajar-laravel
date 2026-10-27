@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title')</title>
+    <title>@yield('title', 'Admin Web Profile')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.8/css/dataTables.dataTables.css">
 </head>
 <style>
 body {
@@ -54,25 +55,35 @@ body {
 
 <body>
     <div class="admin-sidebar shadow">
-        <h4 class="text-center fw-bold text-white pb-3 border-bottom border-secondary">Admin Panel</h4>
+        <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
+            <img src="{{ asset('images/logo.png') }}" alt="logo" height="10" width="50">
+        </a>
         <ul class="nav flex-column mt-3">
             <li class="nav-item">
-                <a class="nav-link text-white" href="{{ route('admin.home') }}">Dashboard</a>
+                <a class="nav-link text-white" href="{{ route('admin.dashboard') }}">Dashboard</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white" href="#">Project</a>
+                <a class="nav-link text-white" href="{{ route('projects.index') }}">Project</a>
             </li>
         </ul>
     </div>
     <div class="admin-content">
-        <div
+        <header
             class="d-flex justify-content-between align-items-center pb-3 mb-4 border-bottom bg-white p-3 rounded shadow-sm">
             <h3 class="fw-bold mb-0">Dashboard</h3>
-            <span class="text-muted fw-semibold">Halo, Administrator</span>
-        </div>
+            <div class="d-flex align-items-center gap-3">
+                <span class="text-muted fw-semibold">Halo, Administrator</span>
+                <a href="#">Logout</a>
+            </div>
+        </header>
         @yield('content')
     </div>
-    @stack('scripts')
+    <footer class="bg-white text-dark text-center border-top py-3 mt-5">
+        <div class="container">
+            <p class="mb-0">&copy; 2026 MyProfile. All rights reserved</p>
+        </div>
+    </footer>
+    @yield('scripts')
 </body>
 
 </html>
