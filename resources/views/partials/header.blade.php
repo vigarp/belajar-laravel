@@ -1,4 +1,4 @@
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm" data-bs-theme="dark">
         <div class="container">
             <a class="navbar-brand" href="#">
                 UNPAM - Web Profile

@@ -1,6 +1,11 @@
 @import 'tailwindcss';
 @import 'bootstrap/dist/css/bootstrap.min.css';
 
+/* Fix konflik class .collapse antara Tailwind CSS v4 dan Bootstrap 5 */
+.navbar-collapse.collapse {
+    visibility: visible;
+}
+
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
