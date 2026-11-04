@@ -29,4 +29,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Accessor untuk properti username agar mengembalikan nama user.
+     */
+    public function getUsernameAttribute(): string
+    {
+        return $this->name;
+    }
 }

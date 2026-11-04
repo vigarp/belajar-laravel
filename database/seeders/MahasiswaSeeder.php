@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Mahasiswa;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class MahasiswaSeeder extends Seeder
@@ -21,12 +20,15 @@ class MahasiswaSeeder extends Seeder
                 'prodi' => 'Sistem Informasi',
                 'kampus' => 'Universitas Pamulang',
                 'email' => 'vigar.ext@gmail.com',
-                'status' => 'Aktif'
+                'status' => 'Aktif',
             ],
         ];
 
         foreach ($mahasiswas as $mahasiswa) {
-            Mahasiswa::create($mahasiswa);
+            Mahasiswa::updateOrCreate(
+                ['nim' => $mahasiswa['nim']],
+                $mahasiswa
+            );
         }
-}
+    }
 }

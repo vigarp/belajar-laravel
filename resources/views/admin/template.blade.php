@@ -72,8 +72,11 @@ body {
             class="d-flex justify-content-between align-items-center pb-3 mb-4 border-bottom bg-white p-3 rounded shadow-sm">
             <h3 class="fw-bold mb-0">Dashboard</h3>
             <div class="d-flex align-items-center gap-3">
-                <span class="text-muted fw-semibold">Halo, Administrator</span>
-                <a href="#">Logout</a>
+                <span class="text-muted fw-semibold">Halo, {{ Auth::user()->username }}</span>
+                <a href="{{ route('admin.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="text-danger text-decoration-none fw-semibold">Logout</a>
+                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
             </div>
         </header>
         @yield('content')
