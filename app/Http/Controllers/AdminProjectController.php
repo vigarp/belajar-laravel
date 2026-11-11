@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Project;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class AdminProjectController extends Controller
@@ -11,6 +12,7 @@ class AdminProjectController extends Controller
     public function index()
     {
         $projects = Project::latest()->get();
+
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -25,12 +27,12 @@ class AdminProjectController extends Controller
             'title' => 'required',
             'description' => 'required',
             'teknologi' => 'required',
-            'image' => 'nullable|image|mimes:png,jpg,jpeg,gif,svg|max:2048'
+            'image' => 'nullable|image|mimes:png,jpg,jpeg,gif,svg|max:2048',
         ]);
 
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = time() . '_' . $request->file('image')->getClientOriginalName();
+            $imagePath = time().'_'.$request->file('image')->getClientOriginalName();
             $request->file('image')->move(public_path('images'), $imagePath);
         }
 
@@ -44,30 +46,31 @@ class AdminProjectController extends Controller
 
         return redirect()->route('projects.index')->with('success', 'Project created successfully');
     }
-    
-    public function edit($id)
+
+    public function edit(string|int $id)
     {
         $project = Project::findOrFail($id);
+
         return view('admin.projects.edit', compact('project'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, string|int $id)
     {
         $request->validate([
             'title' => 'required',
             'description' => 'required',
             'teknologi' => 'required',
-            'image' => 'nullable|image|mimes:png,jpg,jpeg,gif,svg|max:2048'
+            'image' => 'nullable|image|mimes:png,jpg,jpeg,gif,svg|max:2048',
         ]);
 
         $project = Project::findOrFail($id);
         $imagePath = $project->image;
 
         if ($request->hasFile('image')) {
-            if ($project->image) {
-                unlink(public_path('images/' . $project->image));
+            if ($project->image && file_exists(public_path('images/'.$project->image))) {
+                unlink(public_path('images/'.$project->image));
             }
-            $imagePath = time() . '_' . $request->file('image')->getClientOriginalName();
+            $imagePath = time().'_'.$request->file('image')->getClientOriginalName();
             $request->file('image')->move(public_path('images'), $imagePath);
             $project->image = $imagePath;
         }
@@ -83,13 +86,22 @@ class AdminProjectController extends Controller
         return redirect()->route('projects.index')->with('success', 'Project updated successfully');
     }
 
-    public function destroy($id)
+    public function destroy(string|int $id)
     {
         $project = Project::findOrFail($id);
-        if ($project->image) {
-            unlink(public_path('images/' . $project->image));
+        if ($project->image && file_exists(public_path('images/'.$project->image))) {
+            unlink(public_path('images/'.$project->image));
         }
         $project->delete();
+
         return redirect()->route('projects.index')->with('success', 'Project deleted successfully');
+    }
+
+    public function cetakPdf()
+    {
+        $projects = Project::all();
+        $pdf = Pdf::loadView('admin.projects.pdf', compact('projects'));
+
+        return $pdf->stream('projects.pdf');
     }
 }
