@@ -20,14 +20,14 @@ Route::get('/about', function () {
 
 // Route Login Admin
 Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login');
+Route::post('/admin/login', [AdminAuthController::class, 'webLogin'])->name('admin.login');
 
 // Fallback jika ada redirect ke route('login')
 Route::get('/login', fn () => redirect()->route('admin.login'))->name('login');
 
 // Route Admin (Wajib Login)
 Route::prefix('admin')->middleware('auth')->group(function () {
-    Route::match(['get', 'post'], '/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+    Route::match(['get', 'post'], '/logout', [AdminAuthController::class, 'webLogout'])->name('admin.logout');
 
     Route::get('/', function () {
         return view('admin.home');
