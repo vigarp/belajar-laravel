@@ -38,6 +38,12 @@ class AdminAuthController extends Controller
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
 
+            $user = Auth::user();
+            if ($user instanceof User) {
+                $token = $user->createToken('auth_token')->plainTextToken;
+                session(['api_token' => $token]);
+            }
+
             return redirect()->intended(route('admin.dashboard'));
         }
 
@@ -53,6 +59,11 @@ class AdminAuthController extends Controller
      */
     public function webLogout(Request $request): RedirectResponse
     {
+        $user = Auth::user();
+        if ($user instanceof User) {
+            $user->tokens()->where('name', 'auth_token')->delete();
+        }
+
         Auth::logout();
 
         $request->session()->invalidate();

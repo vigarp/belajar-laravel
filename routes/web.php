@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminProjectController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
@@ -36,4 +37,6 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('projects/pdf', [AdminProjectController::class, 'cetakPdf'])->name('projects.pdf');
 
     Route::resource('projects', AdminProjectController::class);
+
+    Route::get('/users', [UserController::class, 'index'])->name('admin.users');
 });

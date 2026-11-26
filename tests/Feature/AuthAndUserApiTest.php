@@ -232,11 +232,48 @@ class AuthAndUserApiTest extends TestCase
         $this->post('/admin/login', [
             'email' => 'webadmin@example.com',
             'password' => 'password123',
-        ])->assertRedirect(route('admin.dashboard'));
+        ])->assertRedirect(route('admin.dashboard'))
+            ->assertSessionHas('api_token');
 
         $this->assertAuthenticatedAs($admin);
 
         $this->post('/admin/logout')->assertRedirect(route('admin.login'));
         $this->assertGuest();
+    }
+
+    /**
+     * Memastikan endpoint /api/user-list (list-users) terlindungi dan mengembalikan JSON user.
+     */
+    public function test_user_list_endpoint_requires_sanctum_and_returns_users(): void
+    {
+        $this->getJson('/api/user-list')->assertStatus(401);
+
+        $authUser = User::factory()->create(['role' => 'admin']);
+        $token = $authUser->createToken('auth_token')->plainTextToken;
+
+        $this->getJson('/api/user-list', ['Authorization' => 'Bearer '.$token])
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'message' => 'List data user',
+            ])
+            ->assertJsonCount(1, 'data');
+    }
+
+    /**
+     * Memastikan halaman admin users hanya bisa diakses setelah login dan memuat elemen AJAX/modal.
+     */
+    public function test_admin_users_page_renders_for_authenticated_admin(): void
+    {
+        $this->get(route('admin.users'))->assertRedirect(route('admin.login'));
+
+        $admin = User::factory()->create(['role' => 'admin']);
+
+        $this->actingAs($admin)
+            ->get(route('admin.users'))
+            ->assertStatus(200)
+            ->assertSee('Data Users')
+            ->assertSee('table_user')
+            ->assertSee('userModal');
     }
 }

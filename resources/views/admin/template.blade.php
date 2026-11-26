@@ -7,6 +7,7 @@
     <title>@yield('title', 'Admin Web Profile')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.8/css/dataTables.dataTables.css">
+    @yield('styles')
 </head>
 <style>
 body {
@@ -64,6 +65,9 @@ body {
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white" href="{{ route('projects.index') }}">Project</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white" href="{{ route('admin.users') }}">Data Users</a>
             </li>
         </ul>
     </div>

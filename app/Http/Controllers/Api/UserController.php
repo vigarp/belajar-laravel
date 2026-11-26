@@ -9,13 +9,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
     /**
-     * Menampilkan daftar seluruh user.
+     * Menampilkan halaman manajemen data user (Admin Web).
      */
-    public function index(): JsonResponse
+    public function index(): View
+    {
+        return view('admin.users');
+    }
+
+    /**
+     * Mengambil daftar seluruh user dalam format JSON.
+     */
+    public function getData(): JsonResponse
     {
         $users = User::all();
 

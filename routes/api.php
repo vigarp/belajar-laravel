@@ -9,5 +9,7 @@ Route::post('/login', [AdminAuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AdminAuthController::class, 'logout']);
-    Route::apiResource('users', UserController::class);
+    Route::get('/user-list', [UserController::class, 'getData'])->name('list-users');
+    Route::get('/users', [UserController::class, 'getData'])->name('users.index');
+    Route::apiResource('users', UserController::class)->except(['index']);
 });
